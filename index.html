@@ -2,44 +2,103 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>My Mini App</title>
+
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
 
 <style>
 body {
   font-family: sans-serif;
   background: linear-gradient(135deg, #1dd1a1, #54a0ff);
-  padding: 15px;
+  padding: 10px;
 }
 
+/* 🔥 GRID */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+/* 🔘 BUTTON */
 .btn {
-  width: 100%;
   padding: 15px;
-  margin: 8px 0;
   border-radius: 12px;
   border: none;
   color: white;
-  font-size: 16px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.3s;
 }
 
-/* COLORS */
+/* 🎨 COLORS */
 .red { background:#ff3b3b; }
 .green { background:#2ecc71; }
 .blue { background:#2d8cff; }
 .purple { background:#9b59b6; }
 .orange { background:#f39c12; }
 
+/* ✨ ANIMATION */
+.btn:hover {
+  transform: scale(1.05);
+  opacity: 0.9;
+}
+
+/* 💎 HEADER */
+.header {
+  text-align:center;
+  color:white;
+  margin-bottom:10px;
+}
 </style>
 </head>
 
 <body>
 
-<h3 style="text-align:center;">🔥 My Panel</h3>
+<div class="header">
+  <h3>🔥 Premium Panel</h3>
+  <p id="user"></p>
+</div>
 
-<button class="btn red">🔥 Red</button>
-<button class="btn green">✅ Green</button>
-<button class="btn blue">😎 Blue</button>
-<button class="btn purple">💜 Premium</button>
-<button class="btn orange">🍊 Orange</button>
+<div class="grid" id="buttons"></div>
+
+<script>
+const tg = Telegram.WebApp;
+tg.expand();
+
+/* 🔐 LOGIN SYSTEM */
+const user = tg.initDataUnsafe.user;
+if(user){
+  document.getElementById("user").innerText =
+    "👤 " + user.first_name;
+}
+
+/* 🎨 COLORS LIST */
+const colors = ["red","green","blue","purple","orange"];
+
+/* 🚀 CREATE 100+ BUTTONS */
+const container = document.getElementById("buttons");
+
+for(let i=1;i<=100;i++){
+  let btn = document.createElement("button");
+
+  let color = colors[i % colors.length];
+  btn.className = "btn " + color;
+
+  btn.innerText = "🔥 Button " + i;
+
+  /* CLICK ACTION */
+  btn.onclick = () => {
+    Telegram.WebApp.sendData("button_" + i);
+
+    /* 🌐 OPEN LINK EXAMPLE */
+    if(i === 5){
+      window.open("https://google.com", "_blank");
+    }
+  };
+
+  container.appendChild(btn);
+}
+</script>
 
 </body>
 </html>
